@@ -18,7 +18,7 @@ class CreateCheckoutsTable extends Migration
             $table->timestamps();
             $table->foreignId('user')->references('id')->on('users');
             $table->foreignId('product')->references('id')->on('products');
-            $table->unsignedBigInteger('quantity');
+            $table->unsignedBigInteger('quantity')->default('0');
         });
     }
 

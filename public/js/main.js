@@ -28,6 +28,48 @@ $(".checkout-control").each(function () {
     "pointer-events": "none"
   });
 });
+$(".checkout-control").submit(function (e) {
+  var _this = this;
+
+  $(this).find("*").css({
+    opacity: "0.2",
+    cursor: "inherit",
+    "pointer-events": "none"
+  });
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/checkout",
+    method: "post",
+    data: {
+      id: $(this).find(".id").val(),
+      quantity: $(this).find(".quantity").val()
+    },
+    success: function success(data) {
+      $(_this).find(".quantity").val(0);
+      console.log(data);
+    },
+    error: function error(_error) {
+      console.log(_error);
+      $(_this).find(".checkout-button").css({
+        cursor: "pointer",
+        "pointer-events": "auto",
+        opacity: "1"
+      });
+    },
+    complete: function complete() {
+      $(_this).find("div, .quantity").css({
+        cursor: "pointer",
+        "pointer-events": "auto",
+        opacity: "1"
+      });
+    }
+  });
+  return false;
+});
 $(".quantity").on("input", disableButton);
 
 function disableButton(e) {

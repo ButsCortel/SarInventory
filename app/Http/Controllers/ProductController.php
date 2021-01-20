@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Cloudinary\Uploader;
 
 
+
 class ProductController extends Controller
 {
     public function __construct()
@@ -25,6 +26,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
+
         return view('products.show', ['product' => $product]);
     }
     public function create()
@@ -37,7 +39,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => ['required'],
             'price' => ['required'],
-            'stock' => ['required', 'gt:0'],
+            'stock' => ['required', 'gt:0', 'integer'],
             'category' => ['required'],
             'thumbnail' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:5120']
 

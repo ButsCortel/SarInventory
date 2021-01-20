@@ -22,13 +22,13 @@
                     <li class="truncate">&#8369; {{$product->price}}</li>
                     <li class="truncate font-bold {{$product->stock == 0 ? 'text-red-500' : 'text-green-500'}}">{{$product->stock}} in stock</li>
                 </ul>
-                <form class="checkout-control">
+                <form class="checkout-control" method="post">
+                    @csrf
                     <div onclick='event.stopPropagation()' class="flex justify-between">
-
+                        <input class="id" type="hidden" name="id" value="{{$product->id}}">
                         <input class="text-center border rounded flex-grow quantity" required type="number" min="0" step="1" max="{{$product->stock}}" value="{{old('stock') ? old('stock') : 0}}" onkeydown="numbersOnlyKeydown(event)" name="quantity">
                         <button class="flex-grow flex-shrink-0 checkout-button border-gray-400 hover:bg-gray-200 px-4 border rounded-lg" type="submit">Checkout <i class="fa fa-plus"></i></button>
                     </div>
-
                 </form>
             </div>
 
