@@ -13,7 +13,7 @@
             <div class="bg-white mx-auto p-6  w-5/6  overflow-hidden shadow-md sm:rounded-lg">
 
                 <div class="lg:flex">
-                    <img class="object-contain h-48 mx-auto" src="{{asset('images/no_image.png')}}" alt="product">
+                    <img class="object-contain h-48 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
 
                     <div class="min-w-0 flex-1">
                         <ul class="px-3">
@@ -23,9 +23,10 @@
                             <li class="font-bold truncate">{{$product->stock}} in stock</li>
                             <li title="{{$product->description}}" class="rounded-lg p-1 border border-gray-400 h-14 truncate ">{{$product->description}}</li>
                         </ul>
-                        <div class="flex justify-around  lg:justify-end px-2 mt-2">
-                            <button class="lg:mr-2 bg-blue-500 text-white rounded-lg border border-gray-400 px-2 py-1">Update</button>
-                            <button class="bg-red-500 text-white rounded-lg border border-gray-400 px-2 py-1">Delete</button>
+                        <div class="flex justify-around px-2 mt-2">
+                            <button class="bg-green-500 text-white rounded-lg border border-gray-400 px-2 py-1">Restock</button>
+                            <button class="lg:mx-2 bg-blue-500 text-white rounded-lg border border-gray-400 px-2 py-1">Update</button>
+                            <button onclick="openModal()" class="bg-red-500 text-white rounded-lg border border-gray-400 px-2 py-1">Delete</button>
                         </div>
 
                     </div>
@@ -42,5 +43,7 @@
             height: 200,
         }).makeCode("{{$product->code}}");
     </script>
-
+    <x-confirm-modal :method="__('DELETE')" :uri="__('products.delete')" :id="__($product->id)" :title="__('Confirm Delete')">
+        <p class="font-bold">Are you sure you want to <span class="text-red-500">Delete</span> this product?</p>
+    </x-confirm-modal>
 </x-app-layout>

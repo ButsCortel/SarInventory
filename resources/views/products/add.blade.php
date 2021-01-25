@@ -27,7 +27,7 @@
                         <div class="flex-1 px-2">
                             <label for="category">Category <span class='text-yellow-500'>*</span></label><span class="text-red-500 ml-2">{{$errors->has('category')? '(Invalid input)' : ''}}</span>
                             <select required class="block w-full rounded {{$errors->has('category') ? 'border-red-500' : ''}}" name="category" id="category">
-                                <option {{ old('category') == "" ? 'selected' : '' }} disabled>Select one...</option>
+                                <option {{ old('category') == "" ? 'selected' : '' }} value="" disabled>Select one...</option>
                                 <option {{ old('category') == "Health and Beauty" ? 'selected' : '' }} value="Health and Beauty">Health and Beauty</option>
                                 <option {{ old('category') == "Foods and Drinks" ? 'selected' : '' }} value="Foods and Drinks">Foods and Drinks</option>
                                 <option {{ old('category') == "Home Maintenance" ? 'selected' : '' }} value="Home Maintenance">Home and Living</option>

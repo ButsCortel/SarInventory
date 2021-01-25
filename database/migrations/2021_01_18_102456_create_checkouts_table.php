@@ -16,8 +16,8 @@ class CreateCheckoutsTable extends Migration
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('user')->references('id')->on('users');
-            $table->foreignId('product')->references('id')->on('products');
+            $table->foreignId('user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('product')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('quantity')->default('0');
         });
     }

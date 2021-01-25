@@ -23,7 +23,7 @@ class CheckoutController extends Controller
             'quantity' => ['required', 'gt:0', 'max:' . $product->stock, 'integer'],
 
         ]);
-        error_log($request->id);
+
         $checkout = Checkout::updateOrCreate(
             ["product" => $request->id, "user" => Auth::user()->id],
         );

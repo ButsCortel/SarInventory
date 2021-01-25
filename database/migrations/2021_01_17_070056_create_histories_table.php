@@ -18,8 +18,8 @@ class CreateHistoriesTable extends Migration
             $table->timestamps();
             $table->string('note')->nullable();
             $table->enum('action', ['CREATE', 'UPDATE', 'DELETE', 'RESTOCK', 'SOLD']);
-            $table->foreignId('user')->references('id')->on('users');
-            $table->foreignId('product')->references('id')->on('products');
+            $table->unsignedBigInteger('user');
+            $table->unsignedBigInteger('product');
         });
     }
 

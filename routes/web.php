@@ -30,7 +30,7 @@ Route::get('/products/add', [ProductController::class, 'create'])->name('product
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 // Product post
 Route::post('/products', [ProductController::class, 'store']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
 // Checkout post.
 Route::post('/checkout', [CheckoutController::class, 'store']);
 

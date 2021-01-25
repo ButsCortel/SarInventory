@@ -76,8 +76,11 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
+        error_log($id . 'wtf');
         $product = Product::findOrFail($id);
         $product->delete();
+
+        return redirect('/products')->with('message', 'Product was deleted successfully!');
     }
     public function update($id)
     {

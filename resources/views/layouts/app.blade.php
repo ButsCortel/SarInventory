@@ -8,24 +8,27 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ mix('css/fa.css') }}">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
 
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{asset('js/qrcode.js')}}"></script>
-
-
+    <script src="{{ asset('js/main.js') }}" defer></script>
+    <!-- JQuery modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 h-screen overflow-y-auto">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -40,9 +43,9 @@
             {{ $slot }}
         </main>
     </div>
+    @include('components.checkout-modal')
 
 
 </body>
-<script src="{{ asset('js/main.js') }}"></script>
 
 </html>
