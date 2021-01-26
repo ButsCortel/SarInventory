@@ -21,6 +21,11 @@
                         {{ __('Products') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('checkouts.index')" :active="request()->routeIs('checkouts.index') || request()->routeIs('checkouts.add') || request()->routeIs('checkouts.show')">
+                        {{ __('Checkout') }}
+                    </x-nav-link>
+                </div>
 
             </div>
 
@@ -70,6 +75,9 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index') || request()->routeIs('products.add') || request()->routeIs('products.show')">
                 {{ __('Products') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('checkouts.index')" :active="request()->routeIs('checkouts.index') || request()->routeIs('checkouts.add') || request()->routeIs('checkouts.show')">
+                {{ __('Checkout') }}
             </x-responsive-nav-link>
         </div>
 

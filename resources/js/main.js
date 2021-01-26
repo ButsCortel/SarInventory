@@ -94,12 +94,16 @@ $("form.add-product").submit(function () {
 //         $("#btnSubmit").prop("disabled", true);
 //     }
 // });
-// Confirm modal
+//  modal
 closeModal = () => {
     $(".confirm-modal").hide();
+    $(".restock-modal").hide();
 };
 openModal = () => {
     $(".confirm-modal").css({ display: "flex" });
+};
+openRestockModal = () => {
+    $(".restock-modal").css({ display: "flex" });
 };
 handleConfirm = (e) => {
     console.log(e);

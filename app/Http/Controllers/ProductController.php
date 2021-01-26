@@ -53,7 +53,7 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->category = $request->category;
-        $product->code = Str::random(20);
+        $product->code = $request->code ? $request->code : Str::random();
         $product->user = Auth::user()->id;
         $product->last_user = Auth::user()->id;
 
@@ -76,16 +76,33 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
-        error_log($id . 'wtf');
+
         $product = Product::findOrFail($id);
         $product->delete();
+
+
 
         return redirect('/products')->with('message', 'Product was deleted successfully!');
     }
     public function update($id)
     {
         $product = Product::findOrFail($id);
+    }
+    public function restock($id, Request $request)
+    {
+        $request->validate([
+            'stock' => ['required', 'gt:0', 'integer'],
+        ]);
+        $product = Product::findOrFail($id);
+        $product->stock += $request->stock;
+        $product->save();
 
-        // $product->delete();
+        $history = new History();
+        $history->user = Auth::user()->id;
+        $history->product = $product->id;
+        $history->action = 'RESTOCK';
+        $history->save();
+
+        return view('products.show', ['product' => $product]);
     }
 }

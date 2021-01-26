@@ -31424,6 +31424,10 @@ select {
           animation: bounce 1s infinite;
 }
 
+.checkout-index {
+  height: calc(100vh - 138px);
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

@@ -21,7 +21,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{asset('js/qrcode.js')}}"></script>
+    <script src="{{asset('js/barcode128.min.js')}}"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
     <!-- JQuery modal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
@@ -45,7 +45,11 @@
     </div>
     @include('components.checkout-modal')
 
-
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </body>
 
 </html>

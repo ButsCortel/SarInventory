@@ -103,14 +103,21 @@ $("form.add-product").submit(function () {
 //         $("#btnSubmit").prop("disabled", true);
 //     }
 // });
-// Confirm modal
+//  modal
 
 closeModal = function closeModal() {
   $(".confirm-modal").hide();
+  $(".restock-modal").hide();
 };
 
 openModal = function openModal() {
   $(".confirm-modal").css({
+    display: "flex"
+  });
+};
+
+openRestockModal = function openRestockModal() {
+  $(".restock-modal").css({
     display: "flex"
   });
 };

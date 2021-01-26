@@ -23,8 +23,6 @@
                             <label for="description">Description</label>
                             <textarea class="h-24 block w-full rounded" style=" resize: none" name="description" id="description" rows="3">{{old('description')}}</textarea>
 
-                        </div>
-                        <div class="flex-1 px-2">
                             <label for="category">Category <span class='text-yellow-500'>*</span></label><span class="text-red-500 ml-2">{{$errors->has('category')? '(Invalid input)' : ''}}</span>
                             <select required class="block w-full rounded {{$errors->has('category') ? 'border-red-500' : ''}}" name="category" id="category">
                                 <option {{ old('category') == "" ? 'selected' : '' }} value="" disabled>Select one...</option>
@@ -33,6 +31,8 @@
                                 <option {{ old('category') == "Home Maintenance" ? 'selected' : '' }} value="Home Maintenance">Home and Living</option>
                                 <option {{ old('category') == "Others" ? 'selected' : '' }} value="Others">Others</option>
                             </select>
+                        </div>
+                        <div class="flex-1 px-2">
                             <div class="flex justify-between">
                                 <div class="flex-grow">
                                     <label for="price">Price <span class='text-yellow-500'>*</span> (&#8369;)</label><span class="text-red-500 ml-2">{{$errors->has('price')? '(Invalid input)' : ''}}</span>
@@ -43,15 +43,29 @@
                                     <input oninput="numbersOnlyInput(event)" onkeydown="numbersOnlyKeydown(event)" required class="block w-full rounded {{$errors->has('stock') ? 'border-red-500' : ''}}" type="number" min="1" value="{{old('stock') ? old('stock') : 1}}" name="stock" id="stock">
                                 </div>
                             </div>
+
+                            <label for="code">Barcode <span class="text-gray-500">(Leaving this blank will generate new barcode.)</span></label>
+                            <div class="flex flex-col sm:flex-row justify-around items-center ">
+                                <input class="code text-center flex-shrink rounded" id="code" name="code" type="text" placeholder="input barcode">
+                                <span class="inline-flex mx-2 items-center font-bold">or</span>
+                                <button onclick="openScanner(event)" id="capture" class="text-center flex-1 capture rounded border border-gray-500 p-2">Capture</button>
+                            </div>
                             <label for="thumbnail">Thumbnail</label><br>
                             <input type="file" name="thumbnail" id="thumbnail" accept="image/x-png,image/jpeg,image/jpg">
+
+                            <button id="submit" type="submit" class="mt-5 hover:bg-gray-200 block ml-auto mr-auto sm:mr-0 mt-2 rounded border border-gray-500 p-2">Add product</button>
                         </div>
                     </div>
-                    <button id="submit" type="submit" class="hover:bg-gray-200 block ml-auto mr-auto sm:mr-0 mt-2 rounded border border-gray-500 p-2">Add product</button>
+
+
 
                 </form>
 
             </div>
         </div>
     </div>
+    <div onclick="closeScanner()" class="scanner hidden checkout-bg bg-gray-500 bg-opacity-50 z-10 fixed flex justify-center inset-0 items-center h-screen w-screen">
+        <video onclick="event.stopPropagation()" class="h-80 w-80" id="video"></video>
+    </div>
+
 </x-app-layout>

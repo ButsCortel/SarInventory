@@ -7,6 +7,8 @@ use App\Models\History;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -33,5 +35,11 @@ class CheckoutController extends Controller
         $checkout->save();
 
         return response()->json(['message' => 'Added to checkout!']);
+    }
+    public function index()
+    {
+        $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
+
+        return view('checkout.index')->with('checkouts', json_decode($checkouts));
     }
 }

@@ -28,10 +28,14 @@ Route::get('/dashboard', function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/add', [ProductController::class, 'create'])->name('products.add');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
-// Product post
+
 Route::post('/products', [ProductController::class, 'store']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
-// Checkout post.
+Route::put('/products/{id}', [ProductController::class, 'restock'])->name('products.restock');
+
+// Checkout views
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkouts.index');
+Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkouts.show');
 Route::post('/checkout', [CheckoutController::class, 'store']);
 
 Route::get('/image/qrcode/{text}', [QrController::class, 'makeQrCode'])->name('qrcode');

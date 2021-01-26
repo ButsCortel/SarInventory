@@ -21,16 +21,18 @@
                             <li title="{{$product->category}}" class="truncate ">{{$product->category}}</li>
                             <li class="font-bold truncate">&#8369; {{$product->price}}</li>
                             <li class="font-bold truncate">{{$product->stock}} in stock</li>
-                            <li title="{{$product->description}}" class="rounded-lg p-1 border border-gray-400 h-14 truncate ">{{$product->description}}</li>
+                            <li title="{{$product->description}}" class="text-xs text-gray-600 rounded-lg p-1 border border-gray-400 h-14 truncate ">{{$product->description}}</li>
                         </ul>
                         <div class="flex justify-around px-2 mt-2">
-                            <button class="bg-green-500 text-white rounded-lg border border-gray-400 px-2 py-1">Restock</button>
-                            <button class="lg:mx-2 bg-blue-500 text-white rounded-lg border border-gray-400 px-2 py-1">Update</button>
+                            <button onclick="openRestockModal()" class="bg-green-500 text-white rounded-lg border border-gray-400 px-2 py-1">Restock</button>
+                            <!-- <button class="lg:mx-2 bg-blue-500 text-white rounded-lg border border-gray-400 px-2 py-1">Update</button> -->
                             <button onclick="openModal()" class="bg-red-500 text-white rounded-lg border border-gray-400 px-2 py-1">Delete</button>
                         </div>
 
                     </div>
-                    <div id="qrcode" class="h-48 w-48 mx-auto mt-3 lg:mt-0"></div>
+                    <div id="qrcode" class="flex items-center w-60 mx-auto mt-3 lg:mt-0">
+                        <img class="object-contain max-h-48" id="barcode" />
+                    </div>
 
                 </div>
 
@@ -38,12 +40,14 @@
         </div>
     </div>
     <script>
-        new QRCode(document.getElementById("qrcode"), {
-            width: 200,
-            height: 200,
-        }).makeCode("{{$product->code}}");
+        JsBarcode("#barcode", "{{$product->code}}", {
+            height: 200
+        });
     </script>
     <x-confirm-modal :method="__('DELETE')" :uri="__('products.delete')" :id="__($product->id)" :title="__('Confirm Delete')">
         <p class="font-bold">Are you sure you want to <span class="text-red-500">Delete</span> this product?</p>
     </x-confirm-modal>
+    <x-restock-modal :id="__($product->id)">
+    </x-restock-modal>
+
 </x-app-layout>
