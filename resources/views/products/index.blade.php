@@ -1,14 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
+
         <div class="flex">
-            <h2 class="flex-1 font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Products') }}
 
             </h2>
-            <a class="hover:bg-gray-200 text-center px-2 border border-gray rounded-full block" href="{{route('products.add')}}">Add a Product <i class="fa fa-plus"></i></a>
+            <div class="flex ml-auto">
+                <a class="flex-grow mr-2 bg-white hover:bg-gray-200 text-center shadow px-2 border border-gray rounded-xl block" href="{{route('products.showaddstock')}}">Restock <i class="fa fa-refresh"></i></a>
+                <a class="flex-grow bg-white hover:bg-gray-200 text-center shadow px-2 border border-gray rounded-xl block" href="{{route('products.add')}}">Add Product <i class="fa fa-plus"></i></a>
+            </div>
         </div>
-
     </x-slot>
+
 
     <div class="py-5">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">

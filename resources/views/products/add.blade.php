@@ -4,7 +4,8 @@
             <h2 class="flex-1 font-semibold text-xl text-gray-800 leading-tight">
                 <a href="{{route('products.index')}}">{{ __('Products') }}</a> <i class="fa fa-angle-right"></i> Add
             </h2>
-            <a class="table align-middle flex-shrink-0 ml-auto hover:bg-gray-200 text-center px-2 w-20 border border-gray rounded-full" href="{{route('products.index')}}">Back <i class="fa fa-arrow-left"></i></a>
+            <a class="shadow table align-middle flex-shrink-0 ml-auto hover:bg-gray-200 text-center px-2 w-20 border border-gray rounded-full" href="{{route('products.index')}}">Back <i class="fa fa-arrow-left"></i></a>
+
         </div>
 
     </x-slot>
@@ -56,16 +57,11 @@
                             <button id="submit" type="submit" class="mt-5 hover:bg-gray-200 block ml-auto mr-auto sm:mr-0 mt-2 rounded border border-gray-500 p-2">Add product</button>
                         </div>
                     </div>
-
-
-
                 </form>
 
             </div>
         </div>
     </div>
-    <div onclick="closeScanner()" class="scanner hidden checkout-bg bg-gray-500 bg-opacity-50 z-10 fixed flex justify-center inset-0 items-center h-screen w-screen">
-        <video onclick="event.stopPropagation()" class="h-80 w-80" id="video"></video>
-    </div>
+
 
 </x-app-layout>

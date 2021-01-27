@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import "toastr";
 .checkout-index {
     height: calc(100vh - 138px);
 }

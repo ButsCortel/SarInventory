@@ -27,7 +27,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('products.show', ['product' => $product]);
+        return view('products.show', ['product' => $product, 'message' => '']);
     }
     public function create()
     {
@@ -103,6 +103,38 @@ class ProductController extends Controller
         $history->action = 'RESTOCK';
         $history->save();
 
-        return view('products.show', ['product' => $product]);
+        return view('products.show', ['product' => $product, 'message' => $request->stock . ' pc/s has been added to ' . $product->name . '!']);
+    }
+
+    public function showAddStock()
+    {
+
+        return view('products.addStock', ['message' => '']);
+    }
+    public function addStock(Request $request)
+    {
+        error_log($request->id);
+        $request->validate([
+            'stock' => ['required', 'gt:0', 'integer'],
+            'id' => ['required']
+        ]);
+        $product = Product::findOrFail($request->id);
+        $product->stock += $request->stock;
+        $product->save();
+
+        $history = new History();
+        $history->user = Auth::user()->id;
+        $history->product = $product->id;
+        $history->action = 'RESTOCK';
+        $history->save();
+
+        return response()->json(['message' => $request->stock . ' pc/s has been added to ' . $product->name]);
+    }
+
+    public function fetch(Request $request)
+    {
+        $product = Product::where('code', $request->code)->get();
+
+        return response()->json(['product' => $product]);
     }
 }

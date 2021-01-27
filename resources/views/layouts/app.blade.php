@@ -19,12 +19,11 @@
 
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/nondefer.js') }}"></script>
     <script src="{{asset('js/barcode128.min.js')}}"></script>
-    <script src="{{ asset('js/main.js') }}" defer></script>
-    <!-- JQuery modal -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
 </head>
 
 <body class="font-sans antialiased">
@@ -45,11 +44,13 @@
     </div>
     @include('components.checkout-modal')
 
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
+    <div onclick="closeScanner()" class="scanner hidden bg-gray-500 bg-opacity-50 z-10 fixed flex justify-center inset-0 items-center h-screen w-screen">
+        <div>
+            <p class="bg-black text-white text-center font-bold text-xl">Scan the barcode:</p>
+            <video onclick="event.stopPropagation()" class="bg-black h-72 w-80" id="video"></video>
+        </div>
+    </div>
+
 </body>
 
 </html>

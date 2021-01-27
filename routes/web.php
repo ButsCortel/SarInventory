@@ -27,9 +27,12 @@ Route::get('/dashboard', function () {
 // Product views
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/add', [ProductController::class, 'create'])->name('products.add');
+Route::get('/products/restock', [ProductController::class, 'showAddStock'])->name('products.showaddstock');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
+Route::put('/products/restock', [ProductController::class, 'addStock'])->name('products.addstock');
 Route::post('/products', [ProductController::class, 'store']);
+Route::post('/products/fetch', [ProductController::class, 'fetch'])->name('products.fetch');
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
 Route::put('/products/{id}', [ProductController::class, 'restock'])->name('products.restock');
 

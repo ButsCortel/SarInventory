@@ -2,25 +2,254 @@ require("./bootstrap");
 
 require("alpinejs");
 
-const ZXing = require("@zxing/browser");
+const toastr = require("toastr");
+toastr.options.timeOut = 2000;
+toastr.options.positionClass = "toast-bottom-center";
 
+const ZXing = require("@zxing/browser");
+// /products/restock
 window.openScanner = async (e) => {
     e.preventDefault();
     $(".scanner").css({ display: "flex" });
-    const codeReader = new ZXing.BrowserMultiFormatReader();
-    const result = await codeReader.decodeOnceFromVideoDevice(
-        undefined,
-        "video"
-    );
-    $(".code").val(result);
-    $(".scanner").hide();
-    const video = document.getElementById("video");
-    const tracks = video.srcObject.getTracks();
-    tracks[0].stop();
+    try {
+        const codeReader = new ZXing.BrowserMultiFormatReader();
+        const result = await codeReader.decodeOnceFromVideoDevice(
+            undefined,
+            "video"
+        );
+        $(".code").val(result);
+        const video = document.getElementById("video");
+        const tracks = video.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        $(".scanner").hide();
+        $(".fetch-product").trigger("submit");
+    } catch (error) {
+        console.log(error);
+    }
 };
 window.closeScanner = () => {
-    $(".scanner").hide();
     const video = document.getElementById("video");
-    const tracks = video.srcObject.getTracks();
-    tracks[0].stop();
+    const obj = video.srcObject;
+    const tracks = obj.getTracks();
+    tracks.forEach((track) => track.stop());
+    $(".scanner").hide();
+};
+
+window.numbersOnlyInput = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]*/g, "");
+};
+window.numbersOnlyKeydown = (e) => {
+    if (e.key === ".") {
+        e.preventDefault();
+    }
+};
+
+//index page
+
+window.handleCheckout = (e, stocks, id) => {
+    // console.log(stocks, id);
+    e.stopPropagation();
+    const checkBg = $(".checkout-bg");
+    checkBg.css({ display: "flex" }).find(".id").val(id);
+    checkBg.find(".stock").text(stocks + " in stock");
+    checkBg.find(".quantity").val(0).attr("max", stocks);
+    checkBg
+        .find(".confirm-button")
+        .css({ "pointer-events": "none", opacity: "0.2" });
+};
+
+window.handleClose = (e) => {
+    e ? e.preventDefault() : "";
+    $(".checkout-bg").css({ display: "none" });
+};
+
+$(".checkout-control").on("submit", function (e) {
+    $(this).find(".checkout-button-group ").css({
+        opacity: "0.5",
+        cursor: "inherit",
+        "pointer-events": "none",
+    });
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/checkout",
+        method: "post",
+        data: {
+            id: $(this).find(".id").val(),
+            quantity: $(this).find(".quantity").val(),
+        },
+        success: () => {
+            handleClose();
+        },
+        error: (error) => {
+            console.log(error);
+        },
+        complete: () => {
+            $(this).find(".checkout-button-group ").css({
+                opacity: "1",
+                cursor: "inherit",
+                "pointer-events": "",
+            });
+        },
+    });
+    return false;
+});
+
+$(".quantity").on("input", function (e) {
+    e.target.value = e.target.value.replace(/[^0-9]*/g, "");
+    $(this)
+        .next()
+        .children(".confirm-button")
+        .css({ "pointer-events": "none", opacity: "0.2" });
+    if ($(this).val() >= 1 && $(this).val() <= parseInt($(this).attr("max"))) {
+        $(this)
+            .next()
+            .children(".confirm-button")
+            .css({ cursor: "pointer", "pointer-events": "auto", opacity: "1" });
+    }
+});
+
+// Add product page
+
+$("form.add-product").on("submit", function () {
+    setTimeout(function () {
+        disableButton();
+    }, 0);
+    function disableButton() {
+        $("#btnSubmit").prop("disabled", true);
+    }
+});
+
+// restock page
+$(".fetch-product").on("submit", function (e) {
+    e.preventDefault();
+    $(".search-button").css({
+        opacity: "0.2",
+        "pointer-events": "none",
+    });
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/products/fetch",
+        method: "post",
+        data: {
+            code: $("#code").val(),
+        },
+    }).done(function (res) {
+        $("#code").css({ border: "" });
+        if (res.product.length > 0) {
+            const { id, name, price, stock, thumbnail } = res.product[0];
+            $(".fetch-message").hide();
+            $(".product-info").show();
+            $(".product-name").text(name);
+            $(".product-price").text(price + " PHP");
+            $(".product-stock").text(stock + " in stock");
+            thumbnail ? $(".product-img").attr("src", thumbnail) : "";
+            $("#id").val(id);
+            $(".stock-input")
+                .prop("disabled", false)
+                .css({ opacity: "1", "pointer-events": "auto" });
+            $(".stock-button")
+                .prop("disabled", false)
+                .css({ opacity: "1", "pointer-events": "auto" });
+        } else {
+            $(".stock-input")
+                .prop("disabled", true)
+                .css({ opacity: "0.2", "pointer-events": "none" });
+            $(".stock-button")
+                .prop("disabled", true)
+                .css({ opacity: "0.2", "pointer-events": "none" });
+            $("#code").css({ border: "2px solid red" });
+            $(".product-info").hide();
+            $(".fetch-message").show();
+            $("#id").val("");
+            $(".product-name").text("");
+            $(".product-price").text("");
+            $(".product-stock").text("");
+            $(".product-img").attr("src", "/images/no_image.png");
+
+            $(".fetch-message")
+                .text("Product does not exist!")
+                .css({ color: "red" });
+        }
+        $(".search-button").css({
+            opacity: "1",
+            "pointer-events": "auto",
+        });
+    });
+
+    return false;
+});
+
+$(".restock-form").on("submit", function (e) {
+    $(".stock-button").css({
+        opacity: "0.2",
+        "pointer-events": "none",
+    });
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/products/restock",
+        method: "put",
+        data: {
+            id: $("#id").val(),
+            stock: $("#stock").val(),
+        },
+    }).done(function (res) {
+        if (res.message.length > 0) {
+            $(".stock-input")
+                .prop("disabled", true)
+                .css({ opacity: "0.2", "pointer-events": "none" });
+            $(".stock-button")
+                .prop("disabled", true)
+                .css({ opacity: "0.2", "pointer-events": "none" });
+            $(".product-info").hide();
+            $(".fetch-message").show();
+            $("#id").val("");
+            $("#code").val("");
+            $("#stock").val(1);
+            $(".product-name").text("");
+            $(".product-price").text("");
+            $(".product-stock").text("");
+            $(".product-img").attr("src", "/images/no_image.png");
+            $(".fetch-message").text("No product found.").css({ color: "red" });
+            showToast(res.message, "success");
+        } else {
+            $(".stock-button").css({
+                opacity: "1",
+                "pointer-events": "",
+            });
+            showToast("Invalid input!", "error");
+        }
+    });
+
+    return false;
+});
+//  modal
+window.closeModal = () => {
+    $(".confirm-modal").hide();
+    $(".restock-modal").hide();
+};
+window.openModal = () => {
+    $(".confirm-modal").css({ display: "flex" });
+};
+window.openRestockModal = () => {
+    $(".restock-modal").css({ display: "flex" });
+};
+window.handleConfirm = (e) => {
+    console.log(e);
+    return true;
+};
+
+window.showToast = (message, type) => {
+    toastr[type](message);
 };

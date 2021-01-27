@@ -4,7 +4,7 @@
             <h2 class="flex-1 min-w-0 font-semibold text-xl text-gray-800 leading-tight">
                 <a href="{{route('products.index')}}">{{ __('Products') }}</a> <i class="fa fa-angle-right"></i> <span class="inline-block w-5/6 truncate align-top">{{$product->name}}</span>
             </h2>
-            <a class="table align-middle flex-shrink-0 ml-auto hover:bg-gray-200 text-center px-2 w-20 border border-gray rounded-full " href="{{route('products.index')}}">Back <i class="fa fa-arrow-left"></i></a>
+            <a class="shadow table align-middle flex-shrink-0 ml-auto hover:bg-gray-200 text-center px-2 w-20 border border-gray rounded-full " href="{{route('products.index')}}">Back <i class="fa fa-arrow-left"></i></a>
         </div>
     </x-slot>
 
@@ -13,7 +13,7 @@
             <div class="bg-white mx-auto p-6  w-5/6  overflow-hidden shadow-md sm:rounded-lg">
 
                 <div class="lg:flex">
-                    <img class="object-contain h-48 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
+                    <img class="object-contain h-48 w-48 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
 
                     <div class="min-w-0 flex-1">
                         <ul class="px-3">
@@ -30,7 +30,7 @@
                         </div>
 
                     </div>
-                    <div id="qrcode" class="flex items-center w-60 mx-auto mt-3 lg:mt-0">
+                    <div id="qrcode" class="rounded-lg border border-gray-400 flex justify-center items-center w-60 mx-auto mt-3 lg:mt-0">
                         <img class="object-contain max-h-48" id="barcode" />
                     </div>
 
@@ -39,10 +39,14 @@
             </div>
         </div>
     </div>
+
     <script>
         JsBarcode("#barcode", "{{$product->code}}", {
             height: 200
         });
+
+        const message = '{{$message}}';
+        if (message) showToast(message, 'success')
     </script>
     <x-confirm-modal :method="__('DELETE')" :uri="__('products.delete')" :id="__($product->id)" :title="__('Confirm Delete')">
         <p class="font-bold">Are you sure you want to <span class="text-red-500">Delete</span> this product?</p>
