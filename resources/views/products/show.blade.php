@@ -44,10 +44,13 @@
         JsBarcode("#barcode", "{{$product->code}}", {
             height: 200
         });
-
-        const message = '{{$message}}';
-        if (message) showToast(message, 'success')
     </script>
+    @if(Session::has('success_restock'))
+    <script>
+        showToast("{{session('success_restock')}}", 'success')
+    </script>
+    @endif
+
     <x-confirm-modal :method="__('DELETE')" :uri="__('products.delete')" :id="__($product->id)" :title="__('Confirm Delete')">
         <p class="font-bold">Are you sure you want to <span class="text-red-500">Delete</span> this product?</p>
     </x-confirm-modal>

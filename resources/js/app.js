@@ -2,11 +2,8 @@ require("./bootstrap");
 
 require("alpinejs");
 
-const toastr = require("toastr");
-toastr.options.timeOut = 2000;
-toastr.options.positionClass = "toast-bottom-center";
-
 const ZXing = require("@zxing/browser");
+
 // /products/restock
 window.openScanner = async (e) => {
     e.preventDefault();
@@ -81,11 +78,13 @@ $(".checkout-control").on("submit", function (e) {
             id: $(this).find(".id").val(),
             quantity: $(this).find(".quantity").val(),
         },
-        success: () => {
+        success: (data) => {
             handleClose();
+            showToast(data.message, "success");
         },
         error: (error) => {
             console.log(error);
+            showToast(error.responseJSON.message, "error");
         },
         complete: () => {
             $(this).find(".checkout-button-group ").css({
@@ -249,7 +248,57 @@ window.handleConfirm = (e) => {
     console.log(e);
     return true;
 };
+let isCamOpen = false;
+window.toggleCamera = () => {
+    let loading = false;
+    if (isCamOpen) {
+        isCamOpen = false;
+        const video = document.getElementById("video");
+        const tracks = video.srcObject.getTracks();
+        tracks[0].stop();
+        return;
+    }
+    try {
+        isCamOpen = true;
+        const codeReader = new ZXing.BrowserMultiFormatReader();
 
-window.showToast = (message, type) => {
-    toastr[type](message);
+        codeReader.decodeFromVideoDevice(undefined, "video", (result) => {
+            if (result != undefined && !loading) {
+                $("#code").val(result.text);
+                loading = true;
+                setTimeout(() => (loading = false), 2000);
+                $(".add-checkout").trigger("submit");
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
+$(".add-checkout").on("submit", function (e) {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/checkout/add",
+        method: "post",
+        data: {
+            code: $("#code").val(),
+            quantity: $("#quantity").val(),
+        },
+        success: (data) => {
+            $("#code").val("");
+            $("#quantity").val(1);
+            $(".checkouts-section").html(data);
+            showToast("Added to checkout!", "success");
+        },
+        error: (error) => {
+            showToast(error.responseJSON.message, "error");
+        },
+    });
+    // .done(function (data) {
+    //     console.log(data.data);
+    // });
+    return false;
+});

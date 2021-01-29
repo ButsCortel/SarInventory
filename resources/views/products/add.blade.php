@@ -45,9 +45,9 @@
                                 </div>
                             </div>
 
-                            <label for="code">Barcode <span class="text-gray-500">(Leaving this blank will generate new barcode.)</span></label>
+                            <label for="code">Barcode <span class='text-yellow-500'>*</span></label><span class="text-red-500 ml-2">{{$errors->has('code')? '(Code is already taken)' : ''}}</span>
                             <div class="flex flex-col sm:flex-row justify-around items-center ">
-                                <input class="code text-center flex-shrink rounded" id="code" name="code" type="text" placeholder="input barcode">
+                                <input class="{{$errors->has('code') ? 'border-red-500' : ''}} code text-center flex-shrink rounded" id="code" name="code" type="text" value="{{old('code') ? old('code') : ''}}" placeholder="input barcode">
                                 <span class="inline-flex mx-2 items-center font-bold">or</span>
                                 <button onclick="openScanner(event)" id="capture" class="text-center flex-1 capture rounded border border-gray-500 p-2">Capture</button>
                             </div>

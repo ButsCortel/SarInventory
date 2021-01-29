@@ -39,6 +39,8 @@ Route::put('/products/{id}', [ProductController::class, 'restock'])->name('produ
 // Checkout views
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkouts.index');
 Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkouts.show');
+
+Route::post('/checkout/add', [CheckoutController::class, 'ajaxCheckout']);
 Route::post('/checkout', [CheckoutController::class, 'store']);
 
 Route::get('/image/qrcode/{text}', [QrController::class, 'makeQrCode'])->name('qrcode');

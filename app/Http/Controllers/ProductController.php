@@ -27,7 +27,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('products.show', ['product' => $product, 'message' => '']);
+        return view('products.show', ['product' => $product]);
     }
     public function create()
     {
@@ -41,7 +41,8 @@ class ProductController extends Controller
             'price' => ['required'],
             'stock' => ['required', 'gt:0', 'integer'],
             'category' => ['required'],
-            'thumbnail' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:5120']
+            'thumbnail' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'code' => ['required', 'unique:products']
 
         ]);
 
@@ -53,7 +54,7 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->category = $request->category;
-        $product->code = $request->code ? $request->code : Str::random();
+        $product->code = $request->code;
         $product->user = Auth::user()->id;
         $product->last_user = Auth::user()->id;
 
@@ -69,10 +70,7 @@ class ProductController extends Controller
         $history->product = $product->id;
         $history->save();
 
-
-
-
-        return redirect('/products')->with('message', 'Product was added successfully!');
+        return redirect()->route('products.index')->with('success_create', 'Product was created successfully!');
     }
     public function destroy($id)
     {
@@ -82,7 +80,7 @@ class ProductController extends Controller
 
 
 
-        return redirect('/products')->with('message', 'Product was deleted successfully!');
+        return redirect()->route('products.index')->with('success_delete', 'Product was deleted successfully!');
     }
     public function update($id)
     {
@@ -103,13 +101,13 @@ class ProductController extends Controller
         $history->action = 'RESTOCK';
         $history->save();
 
-        return view('products.show', ['product' => $product, 'message' => $request->stock . ' pc/s has been added to ' . $product->name . '!']);
+        return redirect()->route('products.show', $product->id)->with('success_restock', $request->stock . ' pc/s has been added to ' . $product->name . '!');
     }
 
     public function showAddStock()
     {
 
-        return view('products.addStock', ['message' => '']);
+        return view('products.addStock');
     }
     public function addStock(Request $request)
     {

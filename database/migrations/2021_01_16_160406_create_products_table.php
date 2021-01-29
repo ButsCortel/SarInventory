@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->unsignedDecimal('price', 10, 2);
-            $table->string('code');
+            $table->string('code')->unique();
             $table->unsignedBigInteger('stock');
             $table->string('thumbnail')->nullable();
             $table->string('category')->nullable();

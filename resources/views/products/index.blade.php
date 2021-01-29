@@ -36,5 +36,14 @@
             @endforeach
         </div>
     </div>
-
+    @if(Session::has('success_delete'))
+    <script>
+        showToast("{{session('success_delete')}}", 'success')
+    </script>
+    @endif
+    @if(Session::has('success_create'))
+    <script>
+        showToast("{{session('success_create')}}", 'success')
+    </script>
+    @endif
 </x-app-layout>
