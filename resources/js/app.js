@@ -244,11 +244,8 @@ window.openModal = () => {
 window.openRestockModal = () => {
     $(".restock-modal").css({ display: "flex" });
 };
-window.handleConfirm = (e) => {
-    console.log(e);
-    return true;
-};
 let isCamOpen = false;
+
 window.toggleCamera = () => {
     let loading = false;
     if (isCamOpen) {
@@ -288,9 +285,11 @@ $(".add-checkout").on("submit", function (e) {
             quantity: $("#quantity").val(),
         },
         success: (data) => {
+            const { checkoutsView, totalView } = data;
             $("#code").val("");
             $("#quantity").val(1);
-            $(".checkouts-section").html(data);
+            $(".checkouts-section").html(checkoutsView);
+            $(".total-section").html(totalView);
             showToast("Added to checkout!", "success");
         },
         error: (error) => {
@@ -302,3 +301,49 @@ $(".add-checkout").on("submit", function (e) {
     // });
     return false;
 });
+window.deleteCheckout = (id) => {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/checkout/" + id,
+        method: "delete",
+        success: (data) => {
+            const { checkoutsView, totalView } = data;
+            $(".checkouts-section").html(checkoutsView);
+            $(".total-section").html(totalView);
+            showToast("Removed from checkout!", "success");
+        },
+        error: (error) => {
+            showToast(error.responseJSON.message, "error");
+        },
+    });
+};
+window.resetCheckout = (e) => {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/checkout",
+        method: "delete",
+        success: (data) => {
+            const { checkoutsView, totalView } = data;
+            $(".checkouts-section").html(checkoutsView);
+            $(".total-section").html(totalView);
+            showToast("Checkout has been reset!", "success");
+        },
+        error: (error) => {
+            showToast(error.responseJSON.message, "error");
+        },
+    });
+};
+
+// let confirm = false;
+// window.handleConfirm = (e) => {
+
+// };

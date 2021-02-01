@@ -40,6 +40,8 @@ Route::put('/products/{id}', [ProductController::class, 'restock'])->name('produ
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkouts.index');
 Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkouts.show');
 
+Route::delete('/checkout', [CheckoutController::class, 'reset'])->name('checkouts.reset');
+Route::delete('/checkout/{id}', [CheckoutController::class, 'destroy'])->name('checkouts.destroy');
 Route::post('/checkout/add', [CheckoutController::class, 'ajaxCheckout']);
 Route::post('/checkout', [CheckoutController::class, 'store']);
 

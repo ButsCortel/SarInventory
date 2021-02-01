@@ -31904,11 +31904,6 @@ window.openRestockModal = function () {
   });
 };
 
-window.handleConfirm = function (e) {
-  console.log(e);
-  return true;
-};
-
 var isCamOpen = false;
 
 window.toggleCamera = function () {
@@ -31954,9 +31949,12 @@ $(".add-checkout").on("submit", function (e) {
       quantity: $("#quantity").val()
     },
     success: function success(data) {
+      var checkoutsView = data.checkoutsView,
+          totalView = data.totalView;
       $("#code").val("");
       $("#quantity").val(1);
-      $(".checkouts-section").html(data);
+      $(".checkouts-section").html(checkoutsView);
+      $(".total-section").html(totalView);
       showToast("Added to checkout!", "success");
     },
     error: function error(_error2) {
@@ -31968,6 +31966,53 @@ $(".add-checkout").on("submit", function (e) {
 
   return false;
 });
+
+window.deleteCheckout = function (id) {
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/checkout/" + id,
+    method: "delete",
+    success: function success(data) {
+      var checkoutsView = data.checkoutsView,
+          totalView = data.totalView;
+      $(".checkouts-section").html(checkoutsView);
+      $(".total-section").html(totalView);
+      showToast("Removed from checkout!", "success");
+    },
+    error: function error(_error3) {
+      showToast(_error3.responseJSON.message, "error");
+    }
+  });
+};
+
+window.resetCheckout = function (e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/checkout",
+    method: "delete",
+    success: function success(data) {
+      var checkoutsView = data.checkoutsView,
+          totalView = data.totalView;
+      $(".checkouts-section").html(checkoutsView);
+      $(".total-section").html(totalView);
+      showToast("Checkout has been reset!", "success");
+    },
+    error: function error(_error4) {
+      showToast(_error4.responseJSON.message, "error");
+    }
+  });
+}; // let confirm = false;
+// window.handleConfirm = (e) => {
+// };
 
 /***/ }),
 

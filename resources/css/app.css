@@ -2,6 +2,34 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import "toastr";
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .checkout-index {
     height: calc(100vh - 138px);
+    min-height: 440px;
+}
+
+.total-section, .checkouts-section, .total-table-div {
+    min-height: 440px;
+}
+
+@media (max-width: 768px) {
+    .total-section, .checkouts-section {
+        max-height: 500px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .checkout-index {
+        max-height: 750px;
+    }
 }

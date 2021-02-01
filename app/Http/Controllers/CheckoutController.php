@@ -47,9 +47,19 @@ class CheckoutController extends Controller
     }
     public function index()
     {
-        $view = View::make('checkout.index');
+
         $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
-        return $view->with('checkouts', json_decode($checkouts));
+        $total = 0;
+
+        foreach (json_decode($checkouts) as $checkout) {
+            $total += $checkout->product->price * $checkout->quantity;
+        }
+
+
+
+
+
+        return view('checkout.index', ['checkouts' => json_decode($checkouts), 'total' => $total]);
     }
     public function ajaxCheckout(Request $request)
     {
@@ -83,8 +93,44 @@ class CheckoutController extends Controller
         $checkout->save();
 
         $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
+        $total = 0;
 
+        foreach (json_decode($checkouts) as $checkout) {
+            $total += $checkout->product->price * $checkout->quantity;
+        }
 
-        return view('checkout.checkouts', ['checkouts' => json_decode($checkouts)]);
+        $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
+        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
+
+        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
+    }
+    public function destroy($id)
+    {
+
+        $checkout = Checkout::where('product', $id);
+        if (!$checkout) {
+            return response()->json(['message' => 'Checkout does not exist!'], 422);
+        };
+        $checkout->delete();
+
+        $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
+        $total = 0;
+
+        foreach (json_decode($checkouts) as $checkout) {
+            $total += $checkout->product->price * $checkout->quantity;
+        }
+
+        $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
+        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
+
+        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
+    }
+    public function reset()
+    {
+        $checkouts = Checkout::where('user', Auth::user()->id);
+        $checkouts->delete();
+        $totalView = View::make('checkout.total', ['checkouts' => [], 'total' => 0])->render();
+        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => []])->render();
+        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
     }
 }
