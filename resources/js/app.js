@@ -271,31 +271,37 @@ window.toggleCamera = () => {
         console.log(error);
     }
 };
+let add_checkout_loading = false;
 $(".add-checkout").on("submit", function (e) {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
-    $.ajax({
-        url: "/checkout/add",
-        method: "post",
-        data: {
-            code: $("#code").val(),
-            quantity: $("#quantity").val(),
-        },
-        success: (data) => {
-            const { checkoutsView, totalView } = data;
-            $("#code").val("");
-            $("#quantity").val(1);
-            $(".checkouts-section").html(checkoutsView);
-            $(".total-section").html(totalView);
-            showToast("Added to checkout!", "success");
-        },
-        error: (error) => {
-            showToast(error.responseJSON.message, "error");
-        },
-    });
+    if (!add_checkout_loading) {
+        add_checkout_loading = true;
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+        $.ajax({
+            url: "/checkout/add",
+            method: "post",
+            data: {
+                code: $("#code").val(),
+                quantity: $("#quantity").val(),
+            },
+            success: (data) => {
+                const { checkoutsView, totalView } = data;
+                $("#code").val("");
+                $("#quantity").val(1);
+                $(".checkouts-section").html(checkoutsView);
+                $(".total-section").html(totalView);
+                showToast("Added to checkout!", "success");
+                add_checkout_loading = false;
+            },
+            error: (error) => {
+                showToast(error.responseJSON.message, "error");
+                add_checkout_loading = false;
+            },
+        });
+    }
     // .done(function (data) {
     //     console.log(data.data);
     // });
@@ -342,8 +348,3 @@ window.resetCheckout = (e) => {
         },
     });
 };
-
-// let confirm = false;
-// window.handleConfirm = (e) => {
-
-// };

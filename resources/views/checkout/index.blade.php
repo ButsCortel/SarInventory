@@ -26,10 +26,10 @@
                 </form>
 
             </div>
-            <div class="checkouts-section border border-gray-200 shadow-md flex-1 my-2 lg:my-0 mx-2 rounded-lg bg-white p-2  flex-grow lg:h-full overflow-y-auto px-4">
+            <div class="checkouts-section border border-gray-200 shadow-md flex-1 my-2 lg:my-0 mx-2 rounded-lg bg-white p-2 lg:h-full overflow-y-auto px-4">
                 @include('checkout.checkouts')
             </div>
-            <div class="total-section shadow-md sm:rounded-lg border border-gray-200 bg-white flex-1 checkouts-total lg:h-full px-4">
+            <div class="total-section shadow-md rounded-lg border border-gray-200 bg-white flex-1 checkouts-total lg:h-full px-4">
                 @include('checkout.total')
             </div>
 

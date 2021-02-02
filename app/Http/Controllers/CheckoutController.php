@@ -102,7 +102,9 @@ class CheckoutController extends Controller
         $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
         $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
 
-        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
+        return response()->json(
+            ['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => json_decode($checkouts)]
+        );
     }
     public function destroy($id)
     {
@@ -123,7 +125,7 @@ class CheckoutController extends Controller
         $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
         $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
 
-        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
+        return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => json_decode($checkouts)]);
     }
     public function reset()
     {

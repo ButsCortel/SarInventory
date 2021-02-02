@@ -17,7 +17,7 @@
     <div class="py-5">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach($products as $product)
-            <div onclick="window.location=`{{url('/products').'/'.$product->id}}`" class="w-full border hover:border-gray-400 hover:bg-gray-50 cursor-pointer bg-white p-6 rounded-lg">
+            <div onclick="window.location=`{{url('/products').'/'.$product->id}}`" class="w-full border hover:border-gray-400 hover:bg-gray-50 cursor-pointer shadow-md bg-white p-6 rounded-lg">
                 <img class="object-contain h-48 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
                 <ul class="w-full">
                     <li class="truncate font-bold">{{$product->name}}</li>

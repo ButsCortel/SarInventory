@@ -11415,6 +11415,102 @@ window.showToast = function (message, type) {
 if (window.history.replaceState) {
   window.history.replaceState(null, null, window.location.href);
 }
+
+var checkouts = "";
+var checkout_ids = "";
+
+window.storeJSON = function (data) {
+  checkouts = data;
+  checkout_ids = data.map(function (checkout) {
+    return checkout.id;
+  });
+};
+
+var submitted_checkout = false;
+
+window.submitCheckout = function (e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/sale",
+    method: "post",
+    data: {
+      checkouts: checkouts,
+      checkout_ids: checkout_ids,
+      total: $("#total").val(),
+      payment: $("#payment").val()
+    },
+    success: function success(data) {
+      $("#payment").css({
+        "border-color": "",
+        "border-width": ""
+      });
+      $("#change").val(data.change);
+      showToast("Total: &#8369;".concat(data.total, ", Change: &#8369;").concat(data.change), "info");
+      submitted_checkout = true;
+      $("#done-btn").css({
+        "pointer-events": "auto",
+        opacity: "1"
+      });
+    },
+    error: function error(_error) {
+      $("#payment").css({
+        "border-color": "red",
+        "border-width": "2px"
+      });
+      showToast(_error.responseJSON.message, "error");
+    }
+  });
+};
+
+window.doneCheckout = function (e) {
+  e.preventDefault();
+
+  if (submitted_checkout) {
+    $.ajaxSetup({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      }
+    });
+    $.ajax({
+      url: "/sale/done",
+      method: "post",
+      data: {
+        checkouts: checkouts,
+        checkout_ids: checkout_ids,
+        total: $("#total").val(),
+        payment: $("#payment").val(),
+        change: $("#change").val()
+      },
+      success: function success(data) {
+        $("#payment").css({
+          "border-color": "",
+          "border-width": ""
+        });
+        var checkoutsView = data.checkoutsView,
+            totalView = data.totalView;
+        $("#code").val("");
+        $("#quantity").val(1);
+        $(".checkouts-section").html(checkoutsView);
+        $(".total-section").html(totalView);
+        showToast("Transaction finished!", "success");
+        $("#done-btn").css({
+          "pointer-events": "none",
+          opacity: "0.5"
+        });
+        submitted_checkout = false;
+      },
+      error: function error(_error2) {
+        console.log(_error2);
+        showToast("Invalid Input!", "error");
+      }
+    });
+  }
+};
 })();
 
 /******/ })()

@@ -31935,34 +31935,41 @@ window.toggleCamera = function () {
   }
 };
 
+var add_checkout_loading = false;
 $(".add-checkout").on("submit", function (e) {
-  $.ajaxSetup({
-    headers: {
-      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    }
-  });
-  $.ajax({
-    url: "/checkout/add",
-    method: "post",
-    data: {
-      code: $("#code").val(),
-      quantity: $("#quantity").val()
-    },
-    success: function success(data) {
-      var checkoutsView = data.checkoutsView,
-          totalView = data.totalView;
-      $("#code").val("");
-      $("#quantity").val(1);
-      $(".checkouts-section").html(checkoutsView);
-      $(".total-section").html(totalView);
-      showToast("Added to checkout!", "success");
-    },
-    error: function error(_error2) {
-      showToast(_error2.responseJSON.message, "error");
-    }
-  }); // .done(function (data) {
+  if (!add_checkout_loading) {
+    add_checkout_loading = true;
+    $.ajaxSetup({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      }
+    });
+    $.ajax({
+      url: "/checkout/add",
+      method: "post",
+      data: {
+        code: $("#code").val(),
+        quantity: $("#quantity").val()
+      },
+      success: function success(data) {
+        var checkoutsView = data.checkoutsView,
+            totalView = data.totalView;
+        $("#code").val("");
+        $("#quantity").val(1);
+        $(".checkouts-section").html(checkoutsView);
+        $(".total-section").html(totalView);
+        showToast("Added to checkout!", "success");
+        add_checkout_loading = false;
+      },
+      error: function error(_error2) {
+        showToast(_error2.responseJSON.message, "error");
+        add_checkout_loading = false;
+      }
+    });
+  } // .done(function (data) {
   //     console.log(data.data);
   // });
+
 
   return false;
 });
@@ -32010,9 +32017,7 @@ window.resetCheckout = function (e) {
       showToast(_error4.responseJSON.message, "error");
     }
   });
-}; // let confirm = false;
-// window.handleConfirm = (e) => {
-// };
+};
 
 /***/ }),
 

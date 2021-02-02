@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QrController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,14 @@ Route::delete('/checkout/{id}', [CheckoutController::class, 'destroy'])->name('c
 Route::post('/checkout/add', [CheckoutController::class, 'ajaxCheckout']);
 Route::post('/checkout', [CheckoutController::class, 'store']);
 
+//Sales
+
+Route::post('/sale', [SaleController::class, 'getChange'])->name('sale.change');
+Route::post('/sale/done', [SaleController::class, 'store'])->name('sale.store');
+
 Route::get('/image/qrcode/{text}', [QrController::class, 'makeQrCode'])->name('qrcode');
+
+
+
 
 require __DIR__ . '/auth.php';

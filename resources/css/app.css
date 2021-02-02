@@ -18,13 +18,12 @@ input[type=number] {
     min-height: 440px;
 }
 
-.total-section, .checkouts-section, .total-table-div {
-    min-height: 440px;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .total-section, .checkouts-section {
-        max-height: 500px;
+        max-height: 590px;
+    }
+    .total-section, .checkouts-section, .total-table-div {
+        min-height: 440px;
     }
 }
 

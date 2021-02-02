@@ -17,9 +17,10 @@ class CreateSalesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('product')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedDecimal('price', 10, 2);
-            $table->unsignedBigInteger('quantity');
+            $table->longText('checkouts');
+            $table->unsignedDecimal('total', 10, 2);
+            $table->unsignedDecimal('payment', 10, 2);
+            $table->unsignedDecimal('change', 10, 2);
         });
     }
 
