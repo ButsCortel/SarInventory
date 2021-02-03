@@ -27,18 +27,33 @@
                     <li class="truncate font-bold {{$product->stock == 0 ? 'text-red-500' : 'text-green-500'}}">{{$product->stock}} in stock</li>
                 </ul>
                 <div class=" flex justify-center align-middle">
-                    <button onclick="handleCheckout(event, '{{$product->stock}}', '{{$product->id}}')" {{$product->stock > 0? '': 'disabled'}} class="{{$product->stock? '': 'opacity-50'}} checkout-button block py-2 px-10 border-gray-400 hover:bg-gray-200 px-4 border rounded-xl">Checkout <i class="fa fa-plus"></i></button>
+                    <button onclick="handleCheckout(event, '{{$product->stock}}', '{{$product->id}}')" {{$product->stock > 0? '': 'disabled'}} class="{{$product->stock? '': 'opacity-50 pointer-events-none'}} checkout-button block py-2 px-10 border-gray-400 hover:bg-gray-200 px-4 border rounded-xl">Checkout <i class="fa fa-plus"></i></button>
                 </div>
 
 
             </div>
-
             @endforeach
         </div>
+        @if(count($products) == 0)
+        <div class="py-12 mx-auto">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="overflow-hidden  sm:rounded-lg flex justify-center">
+                    <div class="p-6 bg-white shadow-lg border rounded-lg border-black border-gray-200 text-center">
+                        No products available!
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
     @if(Session::has('success_delete'))
     <script>
         showToast("{{session('success_delete')}}", 'success')
+    </script>
+    @endif
+    @if(count($products) == 0)
+    <script>
+        showToast("No product in stock", 'info')
     </script>
     @endif
     @if(Session::has('success_create'))

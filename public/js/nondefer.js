@@ -11462,6 +11462,10 @@ window.submitCheckout = function (e) {
         "border-color": "red",
         "border-width": "2px"
       });
+      $("#done-btn").css({
+        "pointer-events": "none",
+        opacity: "0.5"
+      });
       showToast(_error.responseJSON.message, "error");
     }
   });

@@ -5,6 +5,7 @@
     </div>
     <div class="flex-grow min-w-0">
         <p class="truncate w-full">Product: {{$checkout->product->name}}</p>
+        <p class="truncate w-full">Stock: {{$checkout->product->stock}} pc/s</p>
         <p class="truncate w-full">Price: &#8369;{{$checkout->product->price}}</p>
         <p class="truncate w-full">Quantity: {{$checkout->quantity}} pc/s</p>
         <div class="flex justify-end text-white">

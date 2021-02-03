@@ -47,10 +47,13 @@ Route::post('/checkout/add', [CheckoutController::class, 'ajaxCheckout']);
 Route::post('/checkout', [CheckoutController::class, 'store']);
 
 //Sales
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+Route::get('/sales/{id}', [SaleController::class, 'show'])->name('sales.show');
+
 
 Route::post('/sale', [SaleController::class, 'getChange'])->name('sale.change');
 Route::post('/sale/done', [SaleController::class, 'store'])->name('sale.store');
-
+//QRCODE
 Route::get('/image/qrcode/{text}', [QrController::class, 'makeQrCode'])->name('qrcode');
 
 

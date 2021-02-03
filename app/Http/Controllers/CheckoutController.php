@@ -28,7 +28,9 @@ class CheckoutController extends Controller
         ]);
         $product = Product::findOrFail($request->id);
 
-
+        if ($product->stock == 0) {
+            return response()->json(['message' => 'Insufficient stocks!'], 422);
+        };
         $checkout = Checkout::updateOrCreate(
             ["product" => $request->id, "user" => Auth::user()->id],
         );
@@ -47,11 +49,18 @@ class CheckoutController extends Controller
     }
     public function index()
     {
+        $productNoStock = Product::where('stock', '=', '0')->get();
+        $products = [];
+        foreach (json_decode($productNoStock) as $product) {
+            array_push($products, $product->id);
+        };
+        Checkout::destroy($products);
+        $rawCheckouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
 
-        $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
+        $checkouts = json_decode($rawCheckouts);
         $total = 0;
 
-        foreach (json_decode($checkouts) as $checkout) {
+        foreach ($checkouts as $checkout) {
             $total += $checkout->product->price * $checkout->quantity;
         }
 
@@ -59,7 +68,7 @@ class CheckoutController extends Controller
 
 
 
-        return view('checkout.index', ['checkouts' => json_decode($checkouts), 'total' => $total]);
+        return view('checkouts.index', ['checkouts' => $checkouts, 'total' => $total]);
     }
     public function ajaxCheckout(Request $request)
     {
@@ -75,7 +84,9 @@ class CheckoutController extends Controller
         };
 
         $product = $result[0];
-
+        if ($product->stock == 0) {
+            return response()->json(['message' => 'Insufficient stocks!'], 422);
+        };
 
         $checkout = Checkout::firstOrCreate(
             ["product" => $product->id, "user" => Auth::user()->id],
@@ -84,7 +95,7 @@ class CheckoutController extends Controller
         $new_val = $checkout->quantity + $request->quantity;
 
         if ($new_val > $product->stock) {
-            return response()->json(['message' => 'Insufficient stocks! ' . $checkout->quantity . ' pc/s already in checkout!'], 422);
+            return response()->json(['message' => 'Insufficient stocks! Only ' . $product->stock . ' pc/s available.'], 422);
         };
 
 
@@ -99,8 +110,8 @@ class CheckoutController extends Controller
             $total += $checkout->product->price * $checkout->quantity;
         }
 
-        $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
-        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
+        $totalView = View::make('checkouts.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
+        $checkoutsView = View::make('checkouts.checkouts', ['checkouts' => json_decode($checkouts)])->render();
 
         return response()->json(
             ['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => json_decode($checkouts)]
@@ -122,8 +133,8 @@ class CheckoutController extends Controller
             $total += $checkout->product->price * $checkout->quantity;
         }
 
-        $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
-        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
+        $totalView = View::make('checkouts.total', ['checkouts' => json_decode($checkouts), 'total' => $total])->render();
+        $checkoutsView = View::make('checkouts.checkouts', ['checkouts' => json_decode($checkouts)])->render();
 
         return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => json_decode($checkouts)]);
     }
@@ -131,8 +142,8 @@ class CheckoutController extends Controller
     {
         $checkouts = Checkout::where('user', Auth::user()->id);
         $checkouts->delete();
-        $totalView = View::make('checkout.total', ['checkouts' => [], 'total' => 0])->render();
-        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => []])->render();
+        $totalView = View::make('checkouts.total', ['checkouts' => [], 'total' => 0])->render();
+        $checkoutsView = View::make('checkouts.checkouts', ['checkouts' => []])->render();
         return response()->json(['checkoutsView' => $checkoutsView, 'totalView' => $totalView]);
     }
 }

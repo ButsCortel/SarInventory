@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkout;
+use App\Models\History;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class SaleController extends Controller
@@ -53,13 +55,35 @@ class SaleController extends Controller
         $sale->save();
         Checkout::destroy($request->checkout_ids);
 
-        $checkouts = Checkout::where('user', Auth::user()->id)->with('product')->get();
 
-        $totalView = View::make('checkout.total', ['checkouts' => json_decode($checkouts), 'total' => 0])->render();
-        $checkoutsView = View::make('checkout.checkouts', ['checkouts' => json_decode($checkouts)])->render();
+        foreach ($request->checkouts as $checkout) {
+            DB::table('products')
+                ->where('id', $checkout['product']['id'])
+                ->decrement('stock', $checkout['quantity']);
+            $history = new History();
+            $history->note = $checkout['quantity'] . ' pc/s sold';
+            $history->action = 'SOLD';
+            $history->user = Auth::user()->id;
+            $history->product = $checkout['product']['id'];
+            $history->save();
+        };
+        $totalView = View::make('checkouts.total', ['checkouts' => [], 'total' => 0])->render();
+        $checkoutsView = View::make('checkouts.checkouts', ['checkouts' => []])->render();
 
         return response()->json(
-            ['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => json_decode($checkouts)]
+            ['checkoutsView' => $checkoutsView, 'totalView' => $totalView, 'checkouts' => []]
         );
     }
+    public function index()
+    {
+        return view('sales.index');
+    }
+    public function show()
+    {
+        return view('sales.show');
+    }
+    // public function create()
+    // {
+    //     return view('sales.add');
+    // }
 }
