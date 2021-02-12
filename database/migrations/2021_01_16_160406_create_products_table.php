@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('code')->unique();
             $table->unsignedBigInteger('stock');
             $table->string('thumbnail')->nullable();
+            $table->string('thumbnail_public_id')->nullable();
             $table->string('category')->nullable();
         });
     }

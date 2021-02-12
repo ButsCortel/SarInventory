@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Checkout;
 use App\Models\History;
 use App\Models\Sale;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -76,11 +77,22 @@ class SaleController extends Controller
     }
     public function index()
     {
-        return view('sales.index');
+        $sales = Sale::orderBy('created_at', 'DESC')->get();
+        return view('sales.index', ['sales' => $sales]);
     }
-    public function show()
+    public function indexDateFilter(Request $request)
     {
-        return view('sales.show');
+    }
+    public function indexSortBy(Request $request)
+    {
+    }
+    public function show($id)
+    {
+        $sale = Sale::findOrFail($id);
+        $user = User::find($sale->user);
+
+
+        return view('sales.show', ['sale' => $sale, 'user' => $user]);
     }
     // public function create()
     // {

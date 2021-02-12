@@ -11,4 +11,9 @@ class Sale extends Model
     protected $casts = [
         'checkouts' => 'array',
     ];
+    //does not work, can't display related data on blade. why tho
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, 'user', 'id');
+    // }
 }

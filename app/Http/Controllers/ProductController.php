@@ -6,9 +6,17 @@ use App\Models\Product;
 use App\Models\History;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Cloudinary\Uploader;
+
+
+\Cloudinary::config(array(
+    "cloud_name" => config('app.cloud_name'),
+    "api_key" => config('app.api_key'),
+    "api_secret" => config('app.api_secret'),
+    "secure" => true
+));
+
 
 
 
@@ -60,8 +68,8 @@ class ProductController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             $response = Uploader::upload($request->file('thumbnail'));
-            error_log($response['secure_url']);
             $product->thumbnail = $response['secure_url'];
+            $product->thumbnail_public_id = $response['public_id'];
         }
 
         $product->save();
@@ -75,10 +83,14 @@ class ProductController extends Controller
     public function destroy($id)
     {
 
+
         $product = Product::findOrFail($id);
+
+        if ($product->thumbnail) {
+            Uploader::destroy($product->thumbnail_public_id);
+        }
+
         $product->delete();
-
-
 
         return redirect()->route('products.index')->with('success_delete', 'Product was deleted successfully!');
     }

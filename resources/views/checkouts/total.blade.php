@@ -8,8 +8,8 @@
             <thead class=" ">
                 <tr class='border border-gray-400'>
                     <th class='truncate border border-gray-400'>Name</th>
-                    <th class='truncate border border-gray-400'>Qty.</th>
                     <th class='truncate border border-gray-400'>Price</th>
+                    <th class='truncate border border-gray-400'>Qty.</th>
                     <th class='truncate border border-gray-400'>S.total</th>
                 </tr>
             </thead>
@@ -17,8 +17,8 @@
                 @foreach($checkouts as $checkout)
                 <tr>
                     <td class="border border-gray-300 px-1  text-center truncate">{{$checkout->product->name}}</td>
-                    <td class="border border-gray-300 px-1 text-right truncate">{{$checkout->quantity}}</td>
                     <td class="border border-gray-300 px-1 text-right truncate">&#8369; {{$checkout->product->price}}</td>
+                    <td class="border border-gray-300 px-1 text-right truncate">{{$checkout->quantity}}</td>
                     <td class="border border-gray-300 px-1 text-right truncate">&#8369; {{$checkout->product->price * $checkout->quantity}}</td>
                 </tr>
                 @endforeach
