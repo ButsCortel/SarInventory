@@ -10,9 +10,12 @@ function convert_12hr($time)
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Sales') }}
-        </h2>
+        <div class="flex">
+            <h2 class="flex-1 min-w-0 font-semibold text-xl text-gray-800 leading-tight">
+                <a href="{{route('sales.index')}}">{{ __('Sales') }}</a> <i class="fa fa-angle-right"></i> <span class="inline-block w-5/6 truncate align-top">{{implode("-",convert_12hr($sale->created_at))}}</span>
+            </h2>
+            <a class="shadow table align-middle flex-shrink-0 ml-auto hover:bg-gray-200 text-center px-2 w-20 border border-gray rounded-full " href="{{route('sales.index')}}">Back <i class="fa fa-arrow-left"></i></a>
+        </div>
     </x-slot>
 
     <div class="py-5">
@@ -36,7 +39,6 @@ function convert_12hr($time)
                             </div>
 
                         </div>
-
                         @endforeach
                     </div>
                     <div class="shadow-md flex flex-col h-full flex-grow border border-gray-400 rounded-md p-4 mx-2 ml-3 h-full">
@@ -88,7 +90,4 @@ function convert_12hr($time)
             </div>
         </div>
     </div>
-    <script>
-        console.log("{{$user->name}}")
-    </script>
 </x-app-layout>

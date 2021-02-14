@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
@@ -50,9 +51,16 @@ Route::post('/checkout', [CheckoutController::class, 'store']);
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('/sales/{id}', [SaleController::class, 'show'])->name('sales.show');
 
+Route::post('/sales/filter', [SaleController::class, 'filter'])->name('sales.filter');
+
 
 Route::post('/sale', [SaleController::class, 'getChange'])->name('sale.change');
 Route::post('/sale/done', [SaleController::class, 'store'])->name('sale.store');
+
+// History
+Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+Route::get('/history/{id}', [HistoryController::class, 'show'])->name('history.show');
+
 //QRCODE
 Route::get('/image/qrcode/{text}', [QrController::class, 'makeQrCode'])->name('qrcode');
 

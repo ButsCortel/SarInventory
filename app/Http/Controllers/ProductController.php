@@ -76,6 +76,8 @@ class ProductController extends Controller
 
         $history->user = Auth::user()->id;
         $history->product = $product->id;
+        $history->stock = $product->stock;
+        $history->previous_stock = $product->stock;
         $history->save();
 
         return redirect()->route('products.index')->with('success_create', 'Product was created successfully!');
@@ -104,10 +106,13 @@ class ProductController extends Controller
             'stock' => ['required', 'gt:0', 'integer'],
         ]);
         $product = Product::findOrFail($id);
+        $history = new History();
+        $history->previous_stock = $product->stock;
+
         $product->stock += $request->stock;
+        $history->stock = $product->stock;
         $product->save();
 
-        $history = new History();
         $history->user = Auth::user()->id;
         $history->product = $product->id;
         $history->action = 'RESTOCK';
@@ -129,10 +134,14 @@ class ProductController extends Controller
             'id' => ['required']
         ]);
         $product = Product::findOrFail($request->id);
+        $history = new History();
+        $history->previous_stock = $product->stock;
+
         $product->stock += $request->stock;
+        $history->stock = $product->stock;
+
         $product->save();
 
-        $history = new History();
         $history->user = Auth::user()->id;
         $history->product = $product->id;
         $history->action = 'RESTOCK';

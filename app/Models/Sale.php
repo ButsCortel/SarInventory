@@ -12,8 +12,8 @@ class Sale extends Model
         'checkouts' => 'array',
     ];
     //does not work, can't display related data on blade. why tho
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class, 'user', 'id');
-    // }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user');
+    }
 }

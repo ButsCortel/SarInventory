@@ -307,6 +307,62 @@ $(".add-checkout").on("submit", function (e) {
     // });
     return false;
 });
+$("#apply").on("click", function (e) {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/sales/filter",
+        method: "post",
+        data: {
+            from: $("#from").val(),
+            to: $("#to").val(),
+        },
+        success: (data) => {
+            const { saleBody } = data;
+
+            $(".sale-body").html(saleBody);
+        },
+        error: (error) => {
+            console.log(error);
+            showToast("Invalid filter!", "error");
+        },
+    });
+
+    // .done(function (data) {
+    //     console.log(data.data);
+    // });
+    return false;
+});
+$("#clear").on("click", function (e) {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    $.ajax({
+        url: "/sales/filter",
+        method: "post",
+        success: (data) => {
+            const { saleBody } = data;
+            $(".sale-body").html(saleBody);
+        },
+        error: (error) => {
+            console.log(error);
+            showToast("Invalid filter!", "error");
+        },
+    });
+
+    // .done(function (data) {
+    //     console.log(data.data);
+    // });
+    return false;
+});
+
 window.deleteCheckout = (id) => {
     $.ajaxSetup({
         headers: {

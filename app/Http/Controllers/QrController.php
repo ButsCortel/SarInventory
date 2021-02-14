@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Endroid\QrCode\QrCode;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as FacadesQrCode;
 
 class QrController extends Controller

@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkout;
-use App\Models\History;
+
 use App\Models\Product;
-use Facade\FlareClient\View as FlareClientView;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\View;
-use Illuminate\View\View as ViewView;
+
 
 class CheckoutController extends Controller
 {

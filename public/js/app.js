@@ -31973,6 +31973,58 @@ $(".add-checkout").on("submit", function (e) {
 
   return false;
 });
+$("#apply").on("click", function (e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/sales/filter",
+    method: "post",
+    data: {
+      from: $("#from").val(),
+      to: $("#to").val()
+    },
+    success: function success(data) {
+      var saleBody = data.saleBody;
+      $(".sale-body").html(saleBody);
+    },
+    error: function error(_error3) {
+      console.log(_error3);
+      showToast("Invalid filter!", "error");
+    }
+  }); // .done(function (data) {
+  //     console.log(data.data);
+  // });
+
+  return false;
+});
+$("#clear").on("click", function (e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+  });
+  $.ajax({
+    url: "/sales/filter",
+    method: "post",
+    success: function success(data) {
+      var saleBody = data.saleBody;
+      $(".sale-body").html(saleBody);
+    },
+    error: function error(_error4) {
+      console.log(_error4);
+      showToast("Invalid filter!", "error");
+    }
+  }); // .done(function (data) {
+  //     console.log(data.data);
+  // });
+
+  return false;
+});
 
 window.deleteCheckout = function (id) {
   $.ajaxSetup({
@@ -31990,8 +32042,8 @@ window.deleteCheckout = function (id) {
       $(".total-section").html(totalView);
       showToast("Removed from checkout!", "success");
     },
-    error: function error(_error3) {
-      showToast(_error3.responseJSON.message, "error");
+    error: function error(_error5) {
+      showToast(_error5.responseJSON.message, "error");
     }
   });
 };
@@ -32013,8 +32065,8 @@ window.resetCheckout = function (e) {
       $(".total-section").html(totalView);
       showToast("Checkout has been reset!", "success");
     },
-    error: function error(_error4) {
-      showToast(_error4.responseJSON.message, "error");
+    error: function error(_error6) {
+      showToast(_error6.responseJSON.message, "error");
     }
   });
 };

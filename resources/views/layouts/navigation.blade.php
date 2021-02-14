@@ -6,29 +6,35 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                        <x-application-logo />
+                        <!-- <span class="block text-lg w-auto text-gray-600">SarInventory</span> -->
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 md:-my-px md:ml-10 md:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 md:-my-px md:ml-10 md:flex">
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index') || request()->routeIs('products.add') || request()->routeIs('products.show') || request()->routeIs('products.showaddstock')">
                         {{ __('Products') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 md:-my-px md:ml-10 md:flex">
                     <x-nav-link :href="route('checkouts.index')" :active="request()->routeIs('checkouts.index') || request()->routeIs('checkouts.add') || request()->routeIs('checkouts.show')">
                         {{ __('Checkout') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 md:-my-px md:ml-10 md:flex">
                     <x-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index') || request()->routeIs('sales.show')">
                         {{ __('Sales') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 md:-my-px md:ml-10 md:flex">
+                    <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index') || request()->routeIs('history.show')">
+                        {{ __('History') }}
                     </x-nav-link>
                 </div>
 
@@ -76,7 +82,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden md:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index') || request()->routeIs('products.add') || request()->routeIs('products.show') || request()->routeIs('products.showaddstock')">
                 {{ __('Products') }}
@@ -86,6 +92,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index') || request()->routeIs('sales.show')">
                 {{ __('Sales') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('history.index')" :active="request()->routeIs('history.index') || request()->routeIs('history.show')">
+                {{ __('History') }}
             </x-responsive-nav-link>
         </div>
 
