@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
+
 class HistoryController extends Controller
 {
     public function __construct()
@@ -15,7 +16,8 @@ class HistoryController extends Controller
     }
     public function index()
     {
-        $histories = History::with('product')->with('user')->orderBy('created_at', 'desc')->get(); //retrieve records from db
+        $histories = History::with(['product', 'user'])->get(); //retrieve records from db
+
         return view('histories.index', ['histories' => json_decode($histories)]);
     }
     public function show($id)

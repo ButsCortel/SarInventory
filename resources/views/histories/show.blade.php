@@ -17,25 +17,28 @@ function convert_12hr($time)
     </x-slot>
 
     <div class="py-5">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white mx-auto p-6  w-5/6  overflow-hidden shadow-md sm:rounded-lg">
 
                 <div class="lg:flex">
 
-                    <div class="min-w-0 flex-1">
-                        <img class="object-contain h-48 w-48 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
-                        <ul class="px-3">
+                    <div class="min-w-0">
+                        <img class="object-contain h-28 w-28 mx-auto" src="{{$product->thumbnail? $product->thumbnail : asset('images/no_image.png')}}" alt="product">
+                        <ul class="px-3 text-center">
                             <li title="{{$product->name}}" class="truncate text-2xl font-bold">{{$product->name}}</li>
-                            <li title="{{$product->category}}" class="truncate ">{{$product->category}}</li>
                             <li class="font-bold truncate">&#8369; {{$product->price}}</li>
-                            <li class="font-bold truncate">{{$product->stock}} in stock</li>
-                            <li title="{{$product->description}}" class="text-xs text-gray-600 rounded-lg p-1 border border-gray-400 h-14 truncate ">{{$product->description}}</li>
                         </ul>
 
 
                     </div>
-                    <div class="flex-1 rounded-lg border border-gray-400 mt-3 lg:mt-0">
-
+                    <div class="p-6 flex-1 min-w-0 rounded-lg border border-gray-400 mt-3 lg:mt-0">
+                        <ul>
+                            <li class="truncate">{{convert_12hr($history->created_at)[0]}} at {{convert_12hr($history->created_at)[1]}}</li>
+                            <li class="truncate" title="{{$user->email}}">User: {{$user->name}}</li>
+                            <li class="truncate">Action: {{$history->action}}</li>
+                            <li class="truncate">Previous Stock: {{$history->previous_stock}}</li>
+                            <li class="truncate">Updated Stock: {{$history->stock}}</li>
+                        </ul>
                     </div>
 
                 </div>

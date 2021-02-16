@@ -7,7 +7,7 @@ function convert($time)
 
 ?>
 
-@if(sizeof($histories)>0)
+@if(!empty($histories)>0)
 @foreach($histories as $history)
 <tr onclick="window.location=`{{route('history.show', $history->id)}}`" class="border hover:bg-gray-100 text-center cursor-pointer">
     <td title="{{implode(convert($history->created_at))}}" class="border border-gray-300">

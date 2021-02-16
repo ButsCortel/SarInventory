@@ -29,10 +29,10 @@ function current_date()
                     <table class="mx-auto sm:w-full table-fixed">
                         <thead>
                             <tr class="border">
-                                <th class="border">Date</th>
-                                <th class="border">User</th>
-                                <th class="border">Action</th>
-                                <th class="border">Product</th>
+                                <th class="w-1/4 border">Date</th>
+                                <th class="w-1/4 border">User</th>
+                                <th class="w-1/4 border">Action</th>
+                                <th class="w-1/4 border">Product</th>
 
                             </tr>
                         </thead>

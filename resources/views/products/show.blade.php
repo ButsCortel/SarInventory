@@ -20,12 +20,11 @@
                             <li title="{{$product->name}}" class="truncate text-2xl font-bold">{{$product->name}}</li>
                             <li title="{{$product->category}}" class="truncate ">{{$product->category}}</li>
                             <li class="font-bold truncate">&#8369; {{$product->price}}</li>
-                            <li class="font-bold truncate">{{$product->stock}} in stock</li>
+                            <li class="{{$product->stock < 1? 'text-red-400': ''}} font-bold truncate">{{$product->stock}} in stock</li>
                             <li title="{{$product->description}}" class="text-xs text-gray-600 rounded-lg p-1 border border-gray-400 h-14 truncate ">{{$product->description}}</li>
                         </ul>
                         <div class="flex justify-around px-2 mt-2">
                             <button onclick="openRestockModal()" class="bg-green-500 text-white rounded-lg border border-gray-400 px-2 py-1">Restock</button>
-                            <!-- <button class="lg:mx-2 bg-blue-500 text-white rounded-lg border border-gray-400 px-2 py-1">Update</button> -->
                             <button onclick="openModal()" class="bg-red-500 text-white rounded-lg border border-gray-400 px-2 py-1">Delete</button>
                         </div>
 

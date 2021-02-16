@@ -16,4 +16,8 @@ class History extends Model
     {
         return $this->belongsTo(User::class, 'user');
     }
+    // public function getPaginated()
+    // {
+    //     return $this->product()->user()->paginate(15);
+    // }
 }

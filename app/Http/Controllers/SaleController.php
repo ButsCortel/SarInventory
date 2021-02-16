@@ -62,9 +62,6 @@ class SaleController extends Controller
 
 
         foreach ($request->checkouts as $checkout) {
-            // DB::table('products')
-            //     ->where('id', $checkout['product']['id'])
-            //     ->decrement('stock', $checkout['quantity']);
             $product = Product::find($checkout['product']['id']);
             $history = new History();
             $history->previous_stock = $product->stock;
@@ -74,6 +71,7 @@ class SaleController extends Controller
             $history->action = 'SOLD';
             $history->user = Auth::user()->id;
             $history->product = $checkout['product']['id'];
+            $product->save();
             $history->save();
         };
         $totalView = View::make('checkouts.total', ['checkouts' => [], 'total' => 0])->render();

@@ -15,13 +15,9 @@ function current_date()
 
 <x-app-layout>
     <x-slot name="header">
-
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-grow">
             {{ __('Sales') }}
         </h2>
-
-
-
     </x-slot>
 
     <div class="py-5">
@@ -29,7 +25,7 @@ function current_date()
             <div class="bg-white shadow-sm sm:rounded-lg p-6 bg-white overflow-auto border-b border-gray-200 mb-2">
                 <h1 class="font-bold">Summary</h1>
                 <div class="md:flex justify-evenly p-2">
-                    <div class="flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-md">
+                    <div class="text-white bg-blue-400 flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-lg">
                         <div class="flex-1">
                             <h2 class="font-bold">Past 30 days</h2>
                             <div>{{$lastMonth[1]}} item/s sold</div>
@@ -37,14 +33,14 @@ function current_date()
                         <div class="flex-1 text-center text-2xl"><span class="font-bold">&#8369;{{$lastMonth[0]}}</span> total</div>
 
                     </div>
-                    <div class="flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-md">
+                    <div class="md:mx-2 text-white bg-yellow-400 flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-lg">
                         <div class="flex-1">
                             <h2 class="font-bold">Past 7 days</h2>
                             <div>{{$lastWeek[1]}} item/s sold</div>
                         </div>
                         <div class="flex-1 text-center text-2xl"><span class="font-bold">&#8369;{{$lastWeek[0]}}</span> total</div>
                     </div>
-                    <div class="flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-md">
+                    <div class="text-white bg-green-400 flex items-center flex-1 p-2 border border-gray-400 rounded-lg shadow-lg">
                         <div class="flex-1">
                             <h2 class="font-bold">Today</h2>
                             <div>{{$today[1]}} item/s sold</div>
