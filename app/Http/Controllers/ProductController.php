@@ -45,7 +45,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->role === 'GUEST') {
-            return response()->json(['message' => 'Unauthorized Account!'], 401);
+            return redirect()->route('products.add')->with('error_message', 'Unauthorized User!');
         };
 
         $request->validate([

@@ -63,5 +63,9 @@
         </div>
     </div>
 
-
+    @if(Session::has('error_message'))
+    <script>
+        showToast("{{session('error_message')}}", 'error')
+    </script>
+    @endif
 </x-app-layout>
