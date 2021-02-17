@@ -10,7 +10,7 @@
         <p class="truncate w-full">Quantity: {{$checkout->quantity}} pc/s</p>
         <div class="flex justify-end text-white">
             <button title="view product" onclick="window.location=`{{url('/products').'/'.$checkout->product->id}}`" class="bg-gray-500 hover:bg-gray-700  border rounded-lg px-2 py-1 mx-1"><i class="fa fa-eye"></i></button>
-            <button onclick="deleteCheckout('{{$checkout->product->id}}')" title="remove" class="remove-btn bg-red-500  hover:bg-red-700  border rounded-lg px-2 py-1 mx-1"><i class="fa fa-trash" aria-hidden="true"></i>
+            <button onclick="deleteCheckout('{{$checkout->id}}')" title="remove" class="remove-btn bg-red-500  hover:bg-red-700  border rounded-lg px-2 py-1 mx-1"><i class="fa fa-trash" aria-hidden="true"></i>
 
             </button>
         </div>

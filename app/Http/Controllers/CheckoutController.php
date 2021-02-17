@@ -123,7 +123,7 @@ class CheckoutController extends Controller
     {
 
 
-        $checkout = Checkout::where('product', $id);
+        $checkout = Checkout::find($id);
         if (!$checkout) {
             return response()->json(['message' => 'Checkout does not exist!'], 422);
         };
