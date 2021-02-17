@@ -8,7 +8,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -40,8 +40,11 @@
         <!-- Page Content -->
         <main>
             {{ $slot }}
+
         </main>
+
     </div>
+
     @include('components.checkout-modal')
 
     <div onclick="closeScanner()" class="scanner hidden bg-gray-500 bg-opacity-50 z-10 fixed flex justify-center inset-0 items-center h-screen w-screen">

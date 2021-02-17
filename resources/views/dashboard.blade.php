@@ -16,9 +16,44 @@ function convert_12hr($time)
     </x-slot>
 
     <div class="py-5">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 grid grid-rows-1 lg:grid-cols-8 grid-cols-4 gap-4">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 grid grid-rows-1 md:grid-cols-8 grid-cols-4 gap-4">
 
-            <div class="row-span-1 col-span-4 rounded-lg shadow-lg p-4 bg-white border border-gray-200">
+
+            <div class="rounded-lg shadow-lg md:col-span-4 col-span-8  row-span-1 p-4 bg-white border border-gray-200">
+                <div class="font-bold text-xl">Sales <button onclick="window.location=`{{url('/sales')}}`"><i class="fa fa-eye"></i></button></div>
+                <div class="text-white grid grid-rows-2 grid-cols-4 gap-4">
+                    <div class="shadow-md text-center bg-green-400 col-span-4 p-2 border border-gray-400 rounded-lg">
+                        <div>Today:</div>
+                        <div class="text-3xl font-bold">&#8369;{{$todayTotal}}</div>
+                    </div>
+                    <div class="shadow-md text-center bg-blue-400 col-span-2 p-2 border border-gray-400 rounded-lg">
+                        <div>Last 30 days:</div>
+                        <div class="text-2xl font-bold">&#8369;{{$lastMonthTotal}}</div>
+                    </div>
+                    <div class="shadow-md text-center bg-yellow-400 col-span-2 p-2 border border-gray-400 rounded-lg">
+                        <div>Last 7 days:</div>
+                        <div class="text-2xl font-bold">&#8369;{{$lastWeekTotal}}</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="rounded-lg shadow-lg md:col-span-4 col-span-8  row-span-1 p-4 bg-white border border-gray-200">
+                <div class="font-bold text-xl">Most Recent Transactions <button onclick="window.location=`{{url('/history')}}`"><i class="fa fa-eye"></i></button></div>
+
+                @if(count($histories) > 0 )
+                @foreach($histories as $history)
+                <div onclick="window.location=`{{url('/history').'/'.$history->id}}`" class="text-center border border-gray-400 rounded-lg px-1 my-1 hover:bg-gray-200 cursor-pointer">
+                    {{convert_12hr($history->created_at)[0]}} {{$history->action}}
+                </div>
+                @endforeach
+                @else
+                <div class="text-center text-gray-500 text-lg mt-5">No recent transaction.</div>
+                @endif
+
+
+
+            </div>
+            <div class="row-span-1 col-span-8 rounded-lg shadow-lg p-4 bg-white border border-gray-200">
                 <div class="font-bold text-xl">Products for restock <button onclick="window.location=`{{url('/products')}}`"><i class="fa fa-eye"></i></button></div>
                 @if(count($products) > 0 )
                 <div class="overflow-y-auto grid grid-flow-col auto-cols-max gap-2 border border-gray-400 p-1 ">
@@ -33,43 +68,10 @@ function convert_12hr($time)
                     @endforeach
                 </div>
                 @else
-                <div class="text-center text-gray-500 text-lg mt-5">
+                <div class="no-restock text-center text-gray-500 text-lg mt-5">
                     <div>Hooray! No products for restock.</div>
                 </div>
                 @endif
-
-
-            </div>
-            <div class="rounded-lg shadow-lg col-span-4 md:col-span-2 row-span-1 p-4 bg-white border border-gray-200">
-                <div class="font-bold text-xl">Sales <button onclick="window.location=`{{url('/sales')}}`"><i class="fa fa-eye"></i></button></div>
-                <div class="grid grid-rows-3 gap-4">
-                    <div class="p-2 border border-gray-400 rounded-lg">
-                        <div>Today:</div>
-                        <div class="text-center text-3xl font-bold">&#8369;{{$todayTotal}}</div>
-                    </div>
-                    <div class="p-2 border border-gray-400 rounded-lg">
-                        <div>Last 7 days:</div>
-                        <div class="text-center text-3xl font-bold">&#8369;{{$lastWeekTotal}}</div>
-                    </div>
-                    <div class="p-2 border border-gray-400 rounded-lg">
-                        <div>Last 30 days:</div>
-                        <div class="text-center text-3xl font-bold">&#8369;{{$lastMonthTotal}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="rounded-lg shadow-lg col-span-4 md:col-span-2 row-span-1 p-4 bg-white border border-gray-200">
-                <div class="font-bold text-xl">Most Recent <button onclick="window.location=`{{url('/history')}}`"><i class="fa fa-eye"></i></button></div>
-
-                @if(count($histories) > 0 )
-                @foreach($histories as $history)
-                <div onclick="window.location=`{{url('/history').'/'.$history->id}}`" class="border border-gray-400 rounded-lg px-1 my-1 hover:bg-gray-200 cursor-pointer">
-                    {{convert_12hr($history->created_at)[0]}} {{$history->action}}
-                </div>
-                @endforeach
-                @else
-                <div class="text-center text-gray-500 text-lg mt-5">No recent transaction.</div>
-                @endif
-
 
 
             </div>

@@ -19,6 +19,7 @@ class CreateHistoriesTable extends Migration
             $table->string('note')->nullable();
             $table->enum('action', ['CREATE', 'UPDATE', 'DELETE', 'RESTOCK', 'SOLD']);
             $table->unsignedBigInteger('previous_stock');
+            $table->unsignedBigInteger('stock');
             $table->foreignId('user')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('product')->references('id')->on('products')->onDelete('cascade');
         });

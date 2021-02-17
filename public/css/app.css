@@ -31694,6 +31694,10 @@ input[type=number] {
   min-height: 440px;
 }
 
+.no-restock {
+  min-height: 268px;
+}
+
 @media (max-width: 1024px) {
   .total-section, .checkouts-section {
     max-height: 590px;

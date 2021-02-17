@@ -22,6 +22,8 @@ class SaleController extends Controller
 
     public function getChange(Request $request)
     {
+
+
         $request->validate([
             'checkouts' => ['required'],
             'checkout_ids' => ['required'],
@@ -39,6 +41,10 @@ class SaleController extends Controller
     }
     public function store(Request $request)
     {
+        if (Auth::user()->role === 'GUEST') {
+            return response()->json(['message' => 'Unauthorized Account!'], 401);
+        };
+
         $request->validate([
             'checkouts' => ['required'],
             'checkout_ids' => ['required'],
@@ -83,6 +89,7 @@ class SaleController extends Controller
     }
     public function index()
     {
+
         $start30 = Carbon::now()->subDays(30)->startOfDay();
         $start7 = Carbon::now()->subDays(7)->startOfDay();
         $end = Carbon::now()->endOfDay();

@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $todayTotal = $todayQuery->sum('total');
 
         $products = Product::where('stock', '<', '6')->get();
-        $histories = History::orderBy('created_at', 'DESC')->paginate(10);
+        $histories = History::orderBy('created_at', 'DESC')->paginate(5);
 
         return view('dashboard', ['products' => $products, 'histories' => $histories, 'lastMonthTotal' => $lastMonthTotal, 'lastWeekTotal' => $lastWeekTotal, 'todayTotal' => $todayTotal]);
     }

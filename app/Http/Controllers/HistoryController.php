@@ -6,7 +6,7 @@ use App\Models\History;
 use App\Models\Product;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class HistoryController extends Controller
 {
@@ -31,6 +31,10 @@ class HistoryController extends Controller
     //DELETE
     public function destroy()
     {
+        if (Auth::user()->role != 'ADMIN') {
+            return response()->json(['message' => 'Unauthorized Account!'], 401);
+        };
+
         History::truncate();
     }
 }

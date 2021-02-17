@@ -1,1 +1,1 @@
-<span class="block text-2xl w-auto text-gray-600">SarInventory</span>
+<h1 class="lg:text-5xl text-2xl font-bold"><span class="text-blue-500">Sar</span><span class="text-gray-400 ">In<span class="text-yellow-400">v</span>en<span class="text-red-500">tory</span></h1>

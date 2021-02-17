@@ -90,8 +90,7 @@ window.doneCheckout = (e) => {
                 submitted_checkout = false;
             },
             error: (error) => {
-                console.log(error);
-                showToast("Invalid Input!", "error");
+                showToast(error.responseJSON.message, "error");
             },
         });
     }

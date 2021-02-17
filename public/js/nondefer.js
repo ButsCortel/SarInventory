@@ -11509,8 +11509,7 @@ window.doneCheckout = function (e) {
         submitted_checkout = false;
       },
       error: function error(_error2) {
-        console.log(_error2);
-        showToast("Invalid Input!", "error");
+        showToast(_error2.responseJSON.message, "error");
       }
     });
   }

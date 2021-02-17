@@ -20,6 +20,8 @@ class CheckoutController extends Controller
     }
     public function store(Request $request)
     {
+
+
         $request->validate([
             'id' => ['required'],
             'quantity' => ['required', 'gt:0', 'integer'],
@@ -72,6 +74,7 @@ class CheckoutController extends Controller
     public function ajaxCheckout(Request $request)
     {
 
+
         $request->validate([
             'code' => ['required'],
             'quantity' => ['required', 'gt:0', 'integer']
@@ -119,6 +122,7 @@ class CheckoutController extends Controller
     public function destroy($id)
     {
 
+
         $checkout = Checkout::where('product', $id);
         if (!$checkout) {
             return response()->json(['message' => 'Checkout does not exist!'], 422);
@@ -139,6 +143,8 @@ class CheckoutController extends Controller
     }
     public function reset()
     {
+
+
         $checkouts = Checkout::where('user', Auth::user()->id);
         $checkouts->delete();
         $totalView = View::make('checkouts.total', ['checkouts' => [], 'total' => 0])->render();

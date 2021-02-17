@@ -44,6 +44,10 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
+        if (Auth::user()->role === 'GUEST') {
+            return response()->json(['message' => 'Unauthorized Account!'], 401);
+        };
+
         $request->validate([
             'name' => ['required'],
             'price' => ['required'],
@@ -84,6 +88,9 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
+        if (Auth::user()->role !== 'ADMIN') {
+            return redirect()->route('products.show', $id)->with('error_restock', 'Unauthorized user!');
+        };
 
 
         $product = Product::findOrFail($id);
@@ -102,10 +109,16 @@ class ProductController extends Controller
     }
     public function restock($id, Request $request)
     {
+        if (Auth::user()->role === 'GUEST') {
+            return redirect()->route('products.show', $id)->with('error_restock', 'Unauthorized user!');
+        };
+
         $request->validate([
             'stock' => ['required', 'gt:0', 'integer'],
         ]);
         $product = Product::findOrFail($id);
+
+
         $history = new History();
         $history->previous_stock = $product->stock;
 
@@ -128,7 +141,10 @@ class ProductController extends Controller
     }
     public function addStock(Request $request)
     {
-        error_log($request->id);
+        if (Auth::user()->role === 'GUEST') {
+            return response()->json(['message' => 'Unauthorized Account!'], 401);
+        };
+
         $request->validate([
             'stock' => ['required', 'gt:0', 'integer'],
             'id' => ['required']

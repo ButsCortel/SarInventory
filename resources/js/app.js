@@ -227,7 +227,7 @@ $(".restock-form").on("submit", function (e) {
                 opacity: "1",
                 "pointer-events": "",
             });
-            showToast("Invalid input!", "error");
+            showToast(res.responseJSON.message, "error");
         }
     });
 

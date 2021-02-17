@@ -21,7 +21,7 @@ function convert_12hr($time)
     <div class="py-5">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 md:flex border-gray-200 md:h-96">
+                <div class="p-6 md:flex border-gray-200 md:max-h-screen">
                     <div class="rounded-lg border border-gray-300 shadow-sm mb-3 md:mb-0  overflow-y-none overflow-x-auto flex-shrink-0 h-96 md:h-auto">
 
                         @foreach($sale->checkouts as $checkout)
